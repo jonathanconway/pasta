@@ -7,7 +7,18 @@ import { injectGlobal }  from 'styled-components'
 injectGlobal`
   body, input, button {
     font-family: 'Source Sans Pro';
+  }
+  
+  .sr-only {
+    visibility: hidden;
+    left: -10000rem;
+    position: absolute;
   }`
 
 import App from './App'
-ReactDOM.render(<App />, document.getElementById('root'))
+
+export const bootstrap = () => {
+  ReactDOM.render(<App />, document.getElementById('root'))
+}
+
+bootstrap()
