@@ -1,170 +1,36 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+
 import { Route, Redirect } from 'react-router'
-import { HashRouter, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
-import {
-  Nav,
-  NavStep,
-  NavBackButton,
-  TemplateList,
-  InfoAlert,
-  Message,
-  Template,
-  FieldInput,
-  RecipientInput,
-  Row,
-  TemplateText,
-  TemplateField,
-  NavLinkButton,
-  Button,
-  ThreeButtonRow } from './App.styles'
+import MyTemplates from './containers/MyTemplates'
+import FillInTemplate from './containers/FillInTemplate'
+import SendMessage from './containers/SendMessage'
+import AuthorTemplate from './containers/AuthorTemplate'
 
-export default class App extends React.Component {
-  static propTypes = {
-    templates: PropTypes.arrayOf(PropTypes.shape({
-      parts: PropTypes.arrayOf(PropTypes.string)
-    })),
-    recipient: PropTypes.string,
-    onChangeFieldValue: PropTypes.func,
-    fieldValues: PropTypes.object
-  }
+import Nav from './components/Nav'
 
-  static defaultProps = {
-    templates: [
-      {
-        parts: [
-          'Hello ',
-          '~',
-          'I am a fan of your app! When will the next update be?'
-        ]
-      }
-    ],
-    recipient: '+44 (0) 7455 661073‬',
-    message: 'Hello, Jonathan. I am a fan of your app! When will the next update be?',
-    createOnChangeFieldValue: () => null,
-    fieldValues: {}
-  }
+export default ({}: {}) => <HashRouter>
+  <div>
+    <Route path="/:activeStep" render={({ match }) => (
+      <Nav activeStep={match.params.activeStep} />
+    )} />
 
-  render = () => {
-    const {
-      templates,
-      recipient,
-      message,
-      createOnChangeFieldValue,
-      fieldValues,
-      onGoBack } = this.props
+    <Route exact path="/" render={() => <Redirect to="/list"/>} />
+    
+    <Route path="/list" component={MyTemplates} />
 
-    return <HashRouter>
-      <div>
-        <Route path="/:screen" render={({ match }) => (
-          <Nav>
-            <NavBackButton onClick={onGoBack}>Back</NavBackButton>
-            <Row>
-              <NavStep className={[match.params.screen === 'list' ? 'active' : ''].join(' ')}>List</NavStep>
-              <NavStep className={[match.params.screen === 'fill' ? 'active' : ''].join(' ')}>Fill</NavStep>
-              <NavStep className={[match.params.screen === 'send' ? 'active' : ''].join(' ')}>Send</NavStep>
-            </Row>
-          </Nav>
-        )} />
+    <Route exact path="/fill/:templateId" render={({ match }) =>
+      <Redirect to={`/fill/${(match.params.templateId || '').toString()}/0`} />
+    } />
+    <Route path="/fill" component={FillInTemplate} />
 
-        <Route exact path="/" render={() => <Redirect to="/list"/>} />
-        
-        <Route path="/list" render={() =>
-          <div>
-            <TemplateList>
-              {templates.map((template, index) =>
-                <li key={`template${index}`}>
-                  <Template>
-                    <NavLink to={`/fill/${index}`}>
-                      {template.parts.join(' ')}
-                    </NavLink>
-                  </Template>
-                </li>
-              )}
-            </TemplateList>
+    <Route exact path="/send" render={({ match }) => <Redirect to="/send/0" />} />
+    <Route path="/send/:templateIndex" render={({ match: { params: { templateIndex } } }) =>
+      <SendMessage />
+    } />
 
-            <InfoAlert>
-              Tap a message to get started ↗
-            </InfoAlert>
-          </div>
-        } />
-
-        <Route exact path="/fill/:templateId" render={({ match }) => <Redirect to={`/fill/${match.params.templateId}/0`} />} />
-
-        <Route path="/fill/:templateId/:fieldId?" render={({ match }) =>
-          <div>
-            <Template>
-              {templates[0].parts.map((part, partIndex) => 
-                ((part.trim() === '~')
-                  ? <TemplateField
-                      key={partIndex}
-                      className={[
-                        parseInt(match.params.fieldId) !== partIndex ? 'active' : ''
-                      ].join(' ')}>
-
-                      {fieldValues[match.params.fieldId] || '~'}
-                    </TemplateField>
-                  : <TemplateText key={partIndex}>
-                      {part}
-                    </TemplateText>)
-              )}
-            </Template>
-
-            {((id) => 
-              <Row>
-                <label
-                  htmlFor={id}
-                  className="sr-only">Field Value</label>
-                <FieldInput
-                  type="text"
-                  id={id}
-                  value={fieldValues[match.params.fieldId]}
-                  onChange={createOnChangeFieldValue(match.params.fieldId)}
-                  autoFocus />
-
-                <Route path="/fill/0/0" render={() =>
-                  <NavLinkButton className="icon icon--next">
-                    <NavLink to={`/fill/0/1`}>Next</NavLink>
-                  </NavLinkButton>
-                } />
-                <Route path="/fill/0/1" render={() =>
-                  <NavLinkButton className="icon icon--finish">
-                    <NavLink className="button button--finish" to={`/send`}>Finish</NavLink>
-                  </NavLinkButton>
-                } />
-              </Row>
-            )('fill-field-value')}
-          </div>
-        } />
-
-        <Route exact path="/send" render={({ match }) => <Redirect to="/send/0" />} />
-
-        <Route path="/send/:templateId" render={({ match }) =>
-          ((({ template }) =>
-            <div>
-              <Message>
-                { message }
-              </Message>
-
-              {((id) => 
-                <Row>
-                  <label htmlFor={id} className="sr-only">Recipient</label>
-                  <RecipientInput type="text" id={id} defaultValue={recipient} />
-                </Row>
-              )('recipient')}
-            
-              <ThreeButtonRow>
-                <NavLinkButton><a href="#">Email</a></NavLinkButton>
-                <NavLinkButton><a href={`sms:${recipient}&body=${message}`}>SMS</a></NavLinkButton>
-                <Button>Copy</Button>
-              </ThreeButtonRow>
-            </div>
-          )({
-            template: templates[match.params.templateId]
-          }))
-       } />
-      </div>
-    </HashRouter>
-  }
-}
+    <Route path="/author" component={AuthorTemplate} />
+  </div>
+</HashRouter>
