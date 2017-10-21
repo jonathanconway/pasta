@@ -31,7 +31,10 @@ module.exports = {
       title: 'Pasta',
       template: './src/index.html',
       appCacheManifest: '/auto.appcache'
-    })
+    }),
+    new (require('copy-webpack-plugin'))([{
+      from: 'assets'
+    }])
   ],
 
   devServer: {
