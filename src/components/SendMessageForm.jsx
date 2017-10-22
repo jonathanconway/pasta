@@ -29,6 +29,14 @@ const renderSmsHref = ({ recipient, template } : MessageModel) =>
     (serializePartsWithValues(template.parts))
   ].join('')
 
+const renderEmailHref = ({ recipient, template } : MessageModel) =>
+  [
+    'mailto:',
+    (recipient || ''),
+    '?body=',
+    encodeURI(serializePartsWithValues(template.parts))
+  ].join('')
+
 const Component = ({ message, message: { template, recipient }, onChangeRecipient }: Props) =>
   <div>
     <Message template={template} />
@@ -42,7 +50,7 @@ const Component = ({ message, message: { template, recipient }, onChangeRecipien
     </Row>
   
     <ThreeButtonRow>
-      <NavLinkButton><a href="#">Email</a></NavLinkButton>
+      <NavLinkButton><a href={renderEmailHref(message)}>Email</a></NavLinkButton>
       <NavLinkButton><a href={renderSmsHref(message)}>SMS</a></NavLinkButton>
       <Button>Copy</Button>
     </ThreeButtonRow>
