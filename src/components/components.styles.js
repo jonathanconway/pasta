@@ -5,14 +5,13 @@ export const gridSize = 0.5
 export const baseFontSize = 1
 
 export const Row = styled.div`
-  margin-top: ${gridSize * 2}rem;
-`
+  margin-top: ${gridSize * 2}rem;`
 
-const button = `
+export const button = `
   display: inline-block;
   height: ${gridSize * 6}rem;
   line-height: ${gridSize * 5.5}rem;
-  font-size: ${baseFontSize * 1.5}rem;
+  font-size: ${baseFontSize * 1.3}rem;
   text-align: center;
   
   border-left: solid 1px gray;
@@ -44,57 +43,63 @@ const button = `
     content: '⇨';
   }
 
-  &.icon--finish:after {
-    content: '✔';
-  }
-
   &.icon--back:before {
-    content: '←';
+    content: '⇦';
   }
 
   &.icon--up:after {
-    content: '↑';
+    content: '⇧';
+  }
+
+  &.icon--edit:before {
+    content: '✎';
+    transform: rotate(82deg);
+    display: inline-block;
+  }
+
+  &.icon--hide-text {
+    text-indent: -10000rem;
+    position: relative;
+
+    &:before,
+    &:after {
+      left: 0;
+      position: absolute;
+      width: 100%;
+      text-indent: 0;
+    }
   }
 
   * {
     text-decoration: none;
     color: initial;
-  }
-`
+  }`
 
 export const Button = styled.button`
   ${button}
 
   background-color: white;
-  padding: 0 ${gridSize * 2}rem;
-`
+  padding: 0 ${gridSize * 2}rem;`
 
 export const NavLinkButton = styled.span`
   ${button}
 
   box-sizing: border-box;
-  vertical-align: top;
-  width: 27%;
-  margin-left: ${gridSize}rem;
-
   color: initial;
-  text-decoration: none;
-`
+  text-decoration: none;`
 
-export const TextBubble = styled.div`
+export const textBubble = `
   border: solid 1px gray;
   border-radius: ${gridSize * 2}rem;
   padding: ${gridSize * 2}rem;
   font-size: ${baseFontSize * 1.2}rem;
-`
+  height: 3rem;
+  overflow: scroll;
+  background: white;
+  line-height: ${gridSize * 3}rem;`
 
-export const FieldPart = styled.span`
-  margin: 0 ${gridSize}rem;
-  padding: 0 ${gridSize}rem;
-  border: solid 2px;
-  border-color: silver;
-  border-radius: ${gridSize}rem;
-`
+export const TextBubble = styled.div`
+  ${textBubble}`
 
 export const field = `
   border-radius: ${gridSize}rem;
@@ -102,37 +107,28 @@ export const field = `
   box-sizing: border-box;
   font-size: ${baseFontSize * 1.2}rem;
   padding: 0 ${gridSize * 2}rem;
-  width: 100%;
-`
+  width: 100%;`
 
-export const infoAlert = `
-  border-radius: 100%;
-  font-size: ${baseFontSize * 1.5}rem;
-  border: solid 1px pink;
-  border-bottom-width: 3px;
-  border-right-width: 3px;
-  color: purple;
-  width: 70%;
-  padding: ${gridSize * 2}rem;
-  text-align: center;
-  margin: 1rem;
-`
-
-export const InfoAlert = styled.div`
-  ${infoAlert}
-  float: right;
-}
-`
-
-export const ThreeButtonRow = Row.extend`
-  > * {
-    width: 31%;
-    box-sizing: border-box;
-    display: inline-block;
+const marginBetweenInnerItems = `
+  margin-left: ${gridSize}rem;
+  margin-right: ${gridSize}rem;
+  &:first-child {
     margin-left: 0;
-
-    &:not(last-child) {
-      margin-right: ${gridSize}rem;
-    }
   }
-`
+  &:last-child {
+    margin-right: 0;
+  }`
+
+export const HorizontalRow = Row.extend`
+  display: flex;
+  justify-content: space-between;
+
+  > * {
+    flex: 1;
+    ${marginBetweenInnerItems}
+  }`
+
+export const srOnly = `
+  visibility: hidden;
+  left: -10000rem;
+  position: absolute;`

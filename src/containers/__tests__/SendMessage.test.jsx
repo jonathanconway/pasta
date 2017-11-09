@@ -1,23 +1,22 @@
-import React from 'react'
-import { mount } from 'enzyme'
+import React            from 'react'
+import { mount }        from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
+import { createStore }  from 'redux'
+import { Provider }     from 'react-redux'
 
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-
-jest.mock('../../appReducer', () => jest.fn(state => state))
-import appReducer from '../../appReducer'
+jest.mock('../../reducer', () => jest.fn(state => state))
+import reducer                      from '../../reducer'
 
 import type { State as StateModel } from '../../models/State'
-import SendMessage from '../SendMessage'
+import SendMessage                  from '../SendMessage'
 
 jest.mock('../../components/SendMessageForm', (props) => jest.fn())
-import SendMessageForm from '../../components/SendMessageForm'
+import SendMessageForm              from '../../components/SendMessageForm'
 
 describe('<SendMessageForm />', () => {
   const mock = (mockFn: any) => mockFn;
 
-  const dummyStore = createStore(appReducer, ({
+  const dummyStore = createStore(reducer, ({
     templates: [1, 2],
     newMessage: { template: { parts: [1,2] } },
     onChangeRecipient: () => null
@@ -51,7 +50,7 @@ describe('<SendMessageForm />', () => {
 
       wrapper.find('input').simulate('change')
 
-      expect(appReducer).toHaveBeenCalledWith(
+      expect(reducer).toHaveBeenCalledWith(
         expect.any(Object),
         expect.objectContaining({
           recipient: 'b'

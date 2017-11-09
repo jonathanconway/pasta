@@ -1,5 +1,5 @@
 export type Part = {
-  text: string,
+  text?:    string,
   isField?: boolean,
-  value?: string
+  value?:   string
 }

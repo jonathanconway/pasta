@@ -1,17 +1,16 @@
-import React from 'react'
-import { mount } from 'enzyme'
-
+import React           from 'react'
+import { mount }       from 'enzyme'
 import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import appReducer from '../../appReducer'
+import { Provider }    from 'react-redux'
 
-import dummyTemplate from '../../config/dummyTemplate'
+import reducer                      from '../../reducer'
+import dummyTemplate                from '../../config/dummyTemplate'
 
 import type { State as StateModel } from '../../models/State'
 import MyTemplates from '../MyTemplates'
 
 jest.mock('../../components/TemplatesList', () => jest.fn())
-import TemplatesList from '../../components/TemplatesList'
+import TemplatesList                from '../../components/TemplatesList'
 
 const mock = (mockFn: any) => mockFn;
 
@@ -20,7 +19,7 @@ describe('<MyTemplates />', () => {
     const state: StateModel = {
       templates: [dummyTemplate]
     }
-    const store = createStore(appReducer, state)
+    const store = createStore(reducer, state)
 
     mock(TemplatesList).mockReturnValueOnce(<div></div>)
     

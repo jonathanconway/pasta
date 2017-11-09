@@ -1,8 +1,8 @@
 import React from 'react'
 import index from '../index'
 
-jest.mock('../App', () => jest.fn(() => <div></div>))
-import App from '../App'
+jest.mock('../components/App', () => jest.fn(() => <div></div>))
+import App from '../components/App'
 
 jest.mock('react-redux', () => ({ Provider: jest.fn((props) => <div>{props.children}</div>) }))
 

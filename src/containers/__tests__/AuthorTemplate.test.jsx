@@ -1,20 +1,16 @@
-import React from 'react'
-
-import { mount } from 'enzyme'
+import React            from 'react'
+import { mount }        from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
+import { createStore }  from 'redux'
+import { Provider }     from 'react-redux'
 
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import appReducer from '../../appReducer'
-
-import dummyTemplate from '../../config/dummyTemplate'
-
+import reducer                      from '../../reducer'
+import dummyTemplate                from '../../config/dummyTemplate'
 import type { State as StateModel } from '../../models/State'
-
-import AuthorTemplate from '../AuthorTemplate'
+import AuthorTemplate               from '../AuthorTemplate'
 
 jest.mock('../../components/AuthorTemplateForm', () => jest.fn())
-import AuthorTemplateForm from '../../components/AuthorTemplateForm'
+import AuthorTemplateForm           from '../../components/AuthorTemplateForm'
 
 const mock = (mockFn: any) => mockFn;
 
@@ -24,7 +20,7 @@ describe('<AuthorTemplate />', () => {
   }
 
   it('receives template as a prop', () => {
-    const store = createStore(appReducer, state)
+    const store = createStore(reducer, state)
 
     mock(AuthorTemplateForm).mockReturnValueOnce(<div></div>)
     
@@ -45,7 +41,7 @@ describe('<AuthorTemplate />', () => {
 
   describe('handling of onChangeText event', () => {
     it('results in a SET_TEMPLATE_TEXT action being dispatched', () => {
-      const store = createStore(appReducer, state)
+      const store = createStore(reducer, state)
 
       mock(AuthorTemplateForm).mockImplementation(({ onChangeText }) =>
         <input onChange={() => onChangeText('foo bar')} />)

@@ -1,14 +1,16 @@
-import React from 'react'
+import React                       from 'react'
 
-import { mount } from 'enzyme'
-import { MemoryRouter } from 'react-router-dom'
+import { mount }                   from 'enzyme'
+import { MemoryRouter }            from 'react-router-dom'
 
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import appReducer from '../../appReducer'
+import { createStore }             from 'redux'
+import { Provider }                from 'react-redux'
+import reducer                     from '../../reducer'
 
-import dummyTemplate from '../../config/dummyTemplate'
-import FillInTemplate from '../FillInTemplate'
+import dummyTemplate               from '../../config/dummyTemplate'
+import FillInTemplate              from '../FillInTemplate'
+
+import { getIndexOfNextFieldPart } from '../../selectors'
 
 jest.mock('../../components/FillInTemplateForm', () => jest.fn())
 import FillInTemplateForm from '../../components/FillInTemplateForm'
@@ -25,7 +27,7 @@ describe('<FillInTemplate />', () => {
 
   it('renders FillInTemplateForm, passing in props', () => {
     const dummyParts = [{ }, { }]
-    const store = createStore(appReducer, ({
+    const store = createStore(reducer, ({
       newMessage: {
         template: {
           parts: dummyParts
@@ -46,6 +48,7 @@ describe('<FillInTemplate />', () => {
         },
         part: dummyParts[0],
         isLastField: true,
+        BackLink: expect.any(Function),
         NextLink: expect.any(Function),
         FinishLink: expect.any(Function),
 
@@ -53,9 +56,9 @@ describe('<FillInTemplate />', () => {
       }), {})
   })
 
-  it('redirects to the next partIndex whose part is a field', () => {
+  it('automatically redirects to the next partIndex whose part is a field', () => {
     const dummyParts = [{ }, { isField: true }]
-    const store = createStore(appReducer, ({
+    const store = createStore(reducer, ({
       templates: [dummyTemplate],
       newMessage: {
         template: {

@@ -1,20 +1,19 @@
-import appReducer from '../appReducer'
-
 import type { Template as TemplateModel } from '../models/Template'
-import type { Message as MessageModel } from '../models/Message'
-import type { State as StateModel } from '../models/State'
+import type { Message as MessageModel }   from '../models/Message'
+import type { State as StateModel }       from '../models/State'
+import reducer                            from '../reducer'
 
 import dummyTemplate from '../config/dummyTemplate'
 
-describe('appReducer', () => {
+describe('reducer', () => {
   it('returns the store passed in', () => {
-    expect(appReducer({ templates: [dummyTemplate] }))
+    expect(reducer({ templates: [dummyTemplate] }))
       .toEqual({ templates: [dummyTemplate] })
   })
 
   describe('CREATE_NEW_MESSAGE', () => {
     it('appends a new message object, using the template at the index given', () => {
-      const newState = appReducer(
+      const newState = reducer(
         { templates: [dummyTemplate] },
         {
           type: 'CREATE_NEW_MESSAGE',
@@ -27,7 +26,7 @@ describe('appReducer', () => {
     
   describe('SET_NEW_MESSAGE_FIELD_VALUE', () => {
     it('sets the value of the part at the given partIndex', () => {
-      const newState = appReducer({
+      const newState = reducer({
         templates: [dummyTemplate],
         newMessage: {
           template: dummyTemplate,
@@ -46,7 +45,7 @@ describe('appReducer', () => {
 
   describe('SET_NEW_MESSAGE_RECIPIENT', () => {
     it('sets the value at the given fieldIndex', () => {
-      const newState = appReducer({
+      const newState = reducer({
         templates: [dummyTemplate],
         newMessage: {
           template: dummyTemplate,
@@ -63,7 +62,7 @@ describe('appReducer', () => {
 
   describe('SET_TEMPLATE_TEXT', () => {
     it('sets the value of the parts of the template at the given templateIndex', () => {      
-      const newState = appReducer({
+      const newState = reducer({
         templates: [{
           parts: [{ text: 'foo' }]
         }]
@@ -80,9 +79,9 @@ describe('appReducer', () => {
 
   describe('INSERT_FIELD_INTO_TEMPLATE', () => {
     it('appends a part with isField set to true to the the template at the given templateIndex', () => {
-      const newState = appReducer({
+      const newState = reducer({
         templates: [{
-          parts: [{ text: 'foo' }, { text: 'bar' }]
+          parts: [{ text: 'foo ' }, { text: 'bar' }]
           //.                  ^ position of field being inserted
         }]
       }, {
@@ -93,7 +92,7 @@ describe('appReducer', () => {
 
       expect(newState.templates[0].parts)
         .toEqual([
-          { text: 'foo' },
+          { text: 'foo ' },
           { text: '',   isField: true },
           { text: 'bar' }
         ])
@@ -102,7 +101,7 @@ describe('appReducer', () => {
 
   describe('CREATE_NEW_TEMPLATE', () => {
     it('appends a new template to the templates array', () => {
-      const newState = appReducer({
+      const newState = reducer({
         templates: [],
       }, {
         type: 'CREATE_NEW_TEMPLATE'
@@ -114,7 +113,7 @@ describe('appReducer', () => {
 
   describe('DELETE_TEMPLATE', () => {
     it('deleted template at specified index from the templates array', () => {
-      const newState = appReducer({
+      const newState = reducer({
         templates: [dummyTemplate]
       }, {
         type: 'DELETE_TEMPLATE',

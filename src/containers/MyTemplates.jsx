@@ -1,13 +1,10 @@
-import React from 'react'
-
-import type { Template as TemplateModel } from '../models/Template'
-
+import React       from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import dummyTemplate from '../config/dummyTemplate'
-
-import TemplatesList from '../components/TemplatesList'
+import type { Template as TemplateModel } from '../models/Template'
+import dummyTemplate                      from '../config/dummyTemplate'
+import TemplatesList                      from '../components/TemplatesList'
 
 const mapStateToProps = state => ({
   templates: state.templates
@@ -47,13 +44,18 @@ const Component = ({
     onClickAddNewMessage={onAppendNewMessage}
     onClickDeleteTemplate={onDeleteTemplate}
     
-    ItemLink={({ template, index, children }) =>
+    ItemFillLink={({ index, children }) =>
       <NavLink to={`/fill/${(index || '0').toString()}`} onClick={() => onAppendNewMessage(parseInt(index || '0'))}>
         {children}
       </NavLink>
     }
+    ItemEditLink={({ index, children }) =>
+      <NavLink to={`/template/new/${(index || '0').toString()}`}>
+        {children}
+      </NavLink>
+    }
     AddNewLink={({ children }) =>
-      <NavLink to={`/author/${templates.length}`}>
+      <NavLink to={`/template/new/${templates.length}`}>
         {children}
       </NavLink>
     }

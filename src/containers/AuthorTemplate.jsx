@@ -1,16 +1,10 @@
-import React from 'react'
-
-import type { Template as TemplateModel } from '../models/Template'
-
-import styled from 'styled-components'
-import { NavLinkButton } from '../components/commonStyles'
-
-import { Route } from 'react-router'
+import React       from 'react'
+import { Route }   from 'react-router'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import dummyTemplate from '../config/dummyTemplate'
-import AuthorTemplateForm from '../components/AuthorTemplateForm'
+import type { Template as TemplateModel } from '../models/Template'
+import AuthorTemplateForm                 from '../components/AuthorTemplateForm'
 
 const mapStateToProps = state => ({
   templates: state.templates
@@ -46,13 +40,13 @@ const Component = ({
   onClickInsertField,
   onClickUseForNewMessage
 }: Props) =>
-  <Route path="/author/:templateIndex" render={({ match: { params: { templateIndex } } }) =>
+  <Route path="/template/new/:templateIndex" render={({ match: { params: { templateIndex } } }) =>
     ((templateIndex) =>
       <AuthorTemplateForm
         template={templates[templateIndex] || {}}
         
         BackLink={({ children }) =>
-          <NavLink to={`/list`}>
+          <NavLink to={`/template/list`}>
             {children}
           </NavLink>
         }

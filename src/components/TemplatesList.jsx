@@ -1,13 +1,18 @@
 import React from 'react'
 
 import type { Template as TemplateModel } from '../models/Template'
-import type { Message as MessageModel } from '../models/Message'
+import type { Message as MessageModel }   from '../models/Message'
 
 import dummyTemplate from '../config/dummyTemplate'
 import Template from './Template'
 
 import styled from 'styled-components'
-import { baseFontSize, gridSize, InfoAlert, NavLinkButton } from './commonStyles'
+import {
+  gridSize
+} from './components.styles'
+const Container = styled.div`
+  height: 28rem;
+  overflow: scroll;`
 const Ul = styled.ul`
   list-style: none;
   padding: 0;
@@ -16,60 +21,97 @@ const Ul = styled.ul`
   a {
     color: initial;
     text-decoration: none;
-  }
-`
+  }`
 const Li = styled.li`
-  margin-bottom: ${gridSize}rem;
-`
-const AddNewLinkInfoAlert = styled(InfoAlert)`
+  margin-bottom: ${gridSize}rem;`
+const AddNewLinkButton = styled.span`
   position: absolute;
-  bottom: ${gridSize}rem;
-`
+  height: 2.7rem;
+  width: 2.7rem;
+  text-indent: -10000rem;
+  border-radius: ${gridSize}rem;
+  top: ${gridSize / 2}rem;
+  right: ${gridSize * 4}rem;
+
+  border: solid 1px white;
+
+  &:after {
+    position: absolute;
+    display: inline-block;
+    top: ${gridSize / 4}rem;
+    left:  ${gridSize}rem;
+    width: 3rem;
+    height: 3rem;
+
+    content: '✎';
+    text-indent: 0;
+    transform: rotate(82deg);
+    color: white;
+    font-size: 3rem;
+    z-index: 10000;
+  }
+
+  &:active {
+    background-color: white;
+    
+    &:after {
+      color: black;
+    }
+  }`
 
 type Props = {
-  templates: Array<TemplateModel>,
-
-  ItemLink: Function,
-  AddNewLink: Function,
+  templates:             Array<TemplateModel>,
 
   onClickAddNewTemplate: Function,
-  onClickAddNewMessage: Function,
-  onClickDeleteTemplate: Function
+  onClickAddNewMessage:  Function,
+  onClickDeleteTemplate: Function,
+
+  ItemFillLink:          Function,
+  ItemEditLink:          Function,
+  AddNewLink:            Function
 }
 
 const Component = ({
   templates,
-  ItemLink,
+
   onClickAddNewTemplate,
   onClickAddNewMessage,
   onClickDeleteTemplate,
+
+  ItemFillLink,
+  ItemEditLink,
   AddNewLink
 }: Props) =>
-  <div>
+  <Container>
     <Ul>
-      {templates.map((template, index) =>
+      {templates.map((template: TemplateModel, index: number) =>
         <Li key={`template${index}`}>
-          <ItemLink
-            template={template}
-            index={index}
-            onClick={() => onClickAddNewMessage(index)}>
-            <Template
-              {...template}
-              onClickDelete={() => onClickDeleteTemplate(index)}
-            />
-          </ItemLink>
+          <Template
+            parts={template.parts}
+            noScroll={true}
+            onClickDelete={() => onClickDeleteTemplate(index)}
+            FillLink={({ children }) =>
+              <ItemFillLink
+                template={template}
+                index={index}
+                onClick={() => onClickAddNewMessage(index)}>
+                {children}
+              </ItemFillLink>}
+            EditLink={({ children }) =>
+              <ItemEditLink
+                index={index}>
+                {children}
+              </ItemEditLink>}
+          />
         </Li>
       )}
     </Ul>
-    <InfoAlert>
-      ↑ Tap on one of the<br /> templates to fill it out
-    </InfoAlert>
     <AddNewLink>
-      <AddNewLinkInfoAlert onClick={onClickAddNewTemplate}>
-        Tap here to author a new template
-      </AddNewLinkInfoAlert>
+      <AddNewLinkButton onClick={onClickAddNewTemplate}>
+        Create a new template
+      </AddNewLinkButton>
     </AddNewLink>
-  </div>
+  </Container>
 
 Component.defaultProps = {
   templates: [{
@@ -82,7 +124,8 @@ Component.defaultProps = {
     ]
   }],
 
-  ItemLink: () => <span>Item</span>,
+  ItemFillLink: () => <span>Item</span>,
+  ItemEditLink: () => <a></a>,
   AddNewLink: () => <a></a>,
 
   onClickAddNewTemplate: () => null,

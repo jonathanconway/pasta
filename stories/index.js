@@ -1,8 +1,12 @@
-import React from 'react';
+import React            from 'react';
+import { storiesOf }    from '@storybook/react';
+import { action }       from '@storybook/addon-actions';
+import { linkTo }       from '@storybook/addon-links';
+import { MemoryRouter } from 'react-router-dom'
 
-import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import App from '../src/components/App'
+storiesOf('App', module)
+  .add('default', () => <App />)
 
 import Template from '../src/components/Template'
 storiesOf('Template', module)
@@ -22,7 +26,7 @@ storiesOf('TemplatesList', module)
 
 import Nav from '../src/components/Nav'
 storiesOf('Nav', module)
-  .add('default', () => <Nav />)
+  .add('default', () => <MemoryRouter><Nav /></MemoryRouter>)
 
 import SendMessageForm from '../src/components/SendMessageForm'
 storiesOf('SendMessageForm', module)

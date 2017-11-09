@@ -1,17 +1,23 @@
-import { serializeParts, deserializeParts, TEMPLATE_FIELD_TOKEN, } from './models/Template'
+import {
+  serializeParts,
+  deserializeParts,
+  TEMPLATE_FIELD_TOKEN
+}                                         from './models/Template'
 
 import type { Template as TemplateModel } from './models/Template'
-import type { Message as MessageModel } from './models/Message'
-import type { State as StateModel } from './models/State'
+import type { Message as MessageModel }   from './models/Message'
+import type { State as StateModel }       from './models/State'
 
-import dummyTemplate from './config/dummyTemplate'
+import dummyTemplate                      from './config/dummyTemplate'
 
 const defaultState: StateModel = {
   newMessage: ({
     template: dummyTemplate,
     recipient: null
   }),
-  templates: [dummyTemplate]
+  templates: [
+    dummyTemplate
+  ]
 }
 
 export default (state: StateModel = defaultState, action: any = {}): StateModel => {
@@ -83,7 +89,7 @@ export default (state: StateModel = defaultState, action: any = {}): StateModel 
         partsString.substr(0, action.selectionStart),
         TEMPLATE_FIELD_TOKEN,
         partsString.substr(action.selectionStart)
-      ].join(' ')
+      ].join('')
       
       return {
         ...state,
