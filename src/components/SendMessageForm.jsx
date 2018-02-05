@@ -110,7 +110,7 @@ class Component extends React.Component<Props, State> {
       { this.state.copyingToClipboard
         ? <Textarea
             innerRef={element => this.Textarea = element}
-            defaultValue={template.parts.map(p => p.isField ? p.value : p.text).join(' ')}
+            defaultValue={template.parts.map(p => p.isField ? p.value : p.text).join('')}
             onFocus={this.selectTextArea}
           />
         : <Message
