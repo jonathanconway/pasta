@@ -16,8 +16,8 @@ export const serializeParts = (parts: Array<Part>) =>
 
 export const serializePartsWithValues = (parts: Array<Part>) =>
   parts
-    .map(({ isField, value, text }) => isField ? value : text)
-    .join(' ')
+    .map(({ isField, value, text }) => isField ? value.trim() : text)
+    .join('')
 
 export const ifThenElse = (input: any, expressionFn: Function, thenFn: Function, elseFn?: Function) =>
   (expressionFn(input))

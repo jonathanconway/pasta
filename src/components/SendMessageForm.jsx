@@ -95,9 +95,6 @@ class Component extends React.Component<Props, State> {
     })
   }
 
-  stringifyFilledTemplate = template =>
-    template.parts.map(p => (p.isField ? p.value.trim() : p.text)).join('')
-
   selectTextArea = () => {
     setTimeout(() => {
       // $FlowFixMe
@@ -113,7 +110,7 @@ class Component extends React.Component<Props, State> {
       { this.state.copyingToClipboard
         ? <Textarea
             innerRef={element => this.Textarea = element}
-            defaultValue={this.stringifyFilledTemplate(template)}
+            defaultValue={serializePartsWithValues(template.parts)}
             onFocus={this.selectTextArea}
           />
         : <Message
