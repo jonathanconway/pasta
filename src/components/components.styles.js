@@ -32,7 +32,7 @@ export const button = `
   }
 
   &.icon--delete:before {
-    content: '🗑';
+    content: '✕';
   }
 
   &.icon:before {
